@@ -1,8 +1,13 @@
 package day06;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.util.concurrent.TimeUnit;
 
 public class Test01 {
     /* 1-Test01 isimli bir class olusturun
@@ -16,7 +21,7 @@ public class Test01 {
    9- Kac sonuc bulundugunu yaziniz
    10-Sayfayi kapatin */
 
-     public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver();
@@ -30,24 +35,37 @@ public class Test01 {
         String sayfaBasligi = driver.getTitle();
 
         if (sayfaBasligi.contains("Save")) {
-             System.out.println(" Sayfa basligi Save iceriyor, test PASS ");
-         } else {
-             System.out.println(" Sayfa basligi Save icermiyor, test FAILED ");
-         }
+            System.out.println(" Sayfa basligi Save iceriyor, test PASS ");
+        } else {
+            System.out.println(" Sayfa basligi Save icermiyor, test FAILED ");
+        }
 
         if (sayfaBasligi.equals("Walmart.com | Save Money. Live Better")) {
-            System.out.println(" pass");
+            System.out.println(" Sayfa basligi testi : PASS");
 
-        }else       System.out.println(" failed");
-         System.out.println(" gecerli baslik current title :" + sayfaBasligi);
-         System.out.println(" Expected Title :" + "Walmart.com | Save Money.Live Better.");
+        } else System.out.println(" Sayfa basligi testi : FAILED ");
+        System.out.println(" gecerli baslik current title :" + sayfaBasligi);
+        System.out.println(" Expected Title :" + "Walmart.com | Save Money.Live Better.");
 
 
         String currentUrl = driver.getCurrentUrl();
 
-        if (currentUrl.contains("walmart.com")){
-            System.out.println("url testi pass");
-        } else System.out.println(" url testi failed");
+        if (currentUrl.contains("walmart.com")) {
+            System.out.println("url testi : PASS ");
+        } else System.out.println(" url testi : FAILED ");
+
+
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        WebElement aramaCubugu = driver.findElement(By.cssSelector("input[id='global-search-input']"));
+
+        String aramaKelimesi = "Nutella";
+        aramaCubugu.sendKeys(aramaKelimesi + Keys.ENTER);
+
+        WebElement sonucYazisi = driver.findElement(By.className("result-summary-container"));
+        System.out.println(sonucYazisi.getText());
+
+        driver.close();
 
     }
+
 }
